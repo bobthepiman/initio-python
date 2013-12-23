@@ -1,4 +1,4 @@
-import config
+from config import *
 import RPIO
 
 class Initio:
@@ -50,17 +50,44 @@ class Initio:
 		self._checkPortIsType(pin, RPIO.OUT);
 		RPIO.output(pin, value);	
 
+	def _getMotorForSide(self, side):
+		"""Returns the motor currently connected to the specified side"""
+		return self.configuration.leftMotor if side is Side.Left else self.configuration.rightMotor;
+
+	def _wheelDir(self, side, dir):
+		motor = self._getMotorForSide(side);
+		motorAval = dir is Direction.Forward;
+		motorBval = dir is Direction.Backward;
+		self._setPin(motor.portA, motorAval);
+		self._setPin(motor.portB, motorBval);
+
+	def _stopMotor(self, side):
+		motor = self._getMotorForSide(side);
+		self._setPin(motor.portA, False);
+		self._setPin(motor.portB, False);
+
 	def forwards(self):
 		"""Commands the robot to drive forwards"""
-		self._setPin(self.configuration.leftMotor.portA, True);
-		self._setPin(self.configuration.leftMotor.portB, False);
-		self._setPin(self.configuration.rightMotor.portA, True);
-		self._setPin(self.configuration.rightMotor.portB, False);
+		self._wheelDir(Side.Left, Direction.Forward);
+		self._wheelDir(Side.Right, Direction.Forward);
 
 	def stop(self):
 		"""Commands the robot to drive forwards"""
-		self._setPin(self.configuration.leftMotor.portA, False);
-		self._setPin(self.configuration.leftMotor.portB, False);
-		self._setPin(self.configuration.rightMotor.portA, False);
-		self._setPin(self.configuration.rightMotor.portB, False);
+		self._stopMotor(Side.Left);
+		self._stopMotor(Side.Right);
+
+	def clockwise(self):
+		"""Commands the robot to rotate clockwise"""
+		self._wheelDir(Side.Left, Direction.Forward);
+		self._wheelDir(Side.Right, Direction.Backward);
+
+	def anticlockwise(self):
+		"""Commands the robot to rotate anticlockwise"""
+		self._wheelDir(Side.Left, Direction.Backward);
+		self._wheelDir(Side.Right, Direction.Forward);
+
+	def reverse(self):
+		"""Commands the robot to drive backwards"""
+		self._wheelDir(Side.Left, Direction.Backward);
+		self._wheelDir(Side.Right, Direction.Backward);
 

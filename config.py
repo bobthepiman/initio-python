@@ -3,9 +3,17 @@ class ConfigException(Exception):
 	"""Exception raised when there is a problem with the configuration"""
 	pass
 
-class Orientation:
-	"""An enum which provides direction information"""
+class Side:
+	"""An enum which provides side information"""
 	Left, Right = range(0, 2);
+
+class Direction:
+	"""An enum which provides direction information"""
+	Forward, Backward = range(2, 4);
+
+class Rotation:
+	"""An enum which provides rotation information"""
+	Clockwise, Anticlockwise = range(4, 6);
 
 class MotorConfiguration:
 	"""Configuration for a motor that defines a port pair and a side"""
@@ -29,7 +37,7 @@ class InitioConfiguration:
 	"""A configuration object to pass to an Initio"""
 	
 	"""This is the default configuration for the left motor"""
-	leftMotor = MotorConfiguration(7, 9, Orientation.Left);
+	leftMotor = MotorConfiguration(7, 9, Side.Left);
 
 	"""This is the default configuration for the right motor"""
-	rightMotor = MotorConfiguration(8, 10, Orientation.Right);
+	rightMotor = MotorConfiguration(8, 10, Side.Right);
