@@ -14,6 +14,16 @@ class Rotation:
 	"""An enum which provides rotation information"""
 	Clockwise, Anticlockwise = range(4, 6);
 
+class UltrasonicConfiguration:
+	"""Configuration for an ultrasonic distance sensor"""
+	
+	"""The port it is connected to"""
+	port = 0;
+
+	def __init__(self, p):
+		"""Constructs the ultrasonic config"""
+		self.port = p;
+
 class MotorConfiguration:
 	"""Configuration for a motor that defines a port pair and a side"""
 
@@ -81,3 +91,7 @@ class InitioConfiguration:
 
 	"""The default configuration for the head assembly"""
 	head = HeadAssemblyConfiguration();
+
+	"""The default ultrasonic configuration"""
+	ultrasonic = UltrasonicConfiguration(14);
+
