@@ -54,20 +54,24 @@ class ServoConfiguration:
 	"""The maximum PWM width this servo supports"""
 	maxWidth = 250;
 
-	def __init__(self, p, min, max):
+	"""The middle position of this servo"""
+	middleWidth = 150;
+
+	def __init__(self, p, min, max, mid):
 		"""Construct a servo configuration"""
 		self.port = p;
 		self.minWidth = min;
 		self.maxWidth = max;
+		self.middleWidth = mid;
 
 class HeadAssemblyConfiguration:
 	"""Configuration for a head assembly"""
 
 	"""The default pan configuration"""
-	panServo = ServoConfiguration(22, 55, 250);
+	panServo = ServoConfiguration(22, 54, 250, 147);
 
 	"""The default tilt configuration"""
-	tiltServo = ServoConfiguration(18, 65, 250);
+	tiltServo = ServoConfiguration(18, 65, 250, 160);
 
 class InitioConfiguration:
 	"""A configuration object to pass to an Initio"""

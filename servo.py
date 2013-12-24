@@ -44,11 +44,20 @@ class InitioServo:
 		servo = self.currentServos[pin];
 		if value > 100:
 			value = 100;
-		if value < 0:
-			value = 0;
-		max = servo.config.maxWidth;
-		min = servo.config.minWidth;
-		target = int(round((((max - min)/100.0)*value) + min));
+		if value < -100:
+			value = -100;
+
+		if value is 0:
+			target = servo.config.middleWidth;
+		elif value < 0:
+			max = servo.config.middleWidth;
+			min = servo.config.minWidth;
+			target = int(round((((max - min)/100.0)*(value+100)) + min));
+		else:
+			max = servo.config.maxWidth;
+			min = servo.config.middleWidth;
+			target = int(round((((max - min)/100.0)*value) + min));
+
 		i = 0;
 		for pinNumber in self.currentServos:
 			if pinNumber is pin:
