@@ -64,10 +64,10 @@ class HeadAssemblyConfiguration:
 	"""Configuration for a head assembly"""
 
 	"""The default pan configuration"""
-	panServo = ServoConfiguration(18, 70, 250);
+	panServo = ServoConfiguration(22, 55, 250);
 
 	"""The default tilt configuration"""
-	tiltServo = ServoConfiguration(22, 50, 250);
+	tiltServo = ServoConfiguration(18, 65, 250);
 
 class InitioConfiguration:
 	"""A configuration object to pass to an Initio"""
