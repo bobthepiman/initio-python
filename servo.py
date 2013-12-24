@@ -3,15 +3,10 @@ from subprocess import call
 class RunningServo:
 	"""A class for a running servo to manage its state"""
 
-	"""The configuration for the servo"""
-	config = None;
-
-	"""The current output value"""
-	output = None;
-
 	def __init__(self, config):
 		"""Initialises the servo"""
 		self.config = config;
+		self.output = None;
 
 class UnitialisedPinException(Exception):
 	"""Exception for when you try and use an unintialised pin"""
@@ -20,8 +15,13 @@ class UnitialisedPinException(Exception):
 class InitioServo:
 	"""Class for managing servos"""
 
-	"""The currently initialised servos"""
-	currentServos = {};
+	def __init__(self):
+		self.currentServos = {};
+
+		self._mappings = {
+			25: 22,
+			24: 18
+		}
 
 	def __del__(self):
 		"""Destructor cleans up its started processes"""
@@ -75,7 +75,7 @@ class InitioServo:
 		min = 2000;
 		pins = [];
 		for pin, servo in self.currentServos.iteritems():
-			pins.append(str(pin));
+			pins.append(str(self._mappings[pin]));
 			if servo.config.minWidth < min:
 				min = servo.config.minWidth;
 			if servo.config.maxWidth > max:

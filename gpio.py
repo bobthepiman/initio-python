@@ -2,18 +2,21 @@ from servo import *
 
 import RPIO
 
+class IncorrectPortMappingException(Exception):
+	"""Exception for when a port mapping is incorrect"""
+	pass
+
 class InitioGpio:
 	"""Helper that wraps up the GPIO pins"""
 
 	"""Const for a servo"""
 	RPIO_SERVO = "servo";
 
-	"""Maintain a list of initialised ports, and how they have been initialised"""
-	_initialisedPorts = {};
-
 	def __init__(self):
 		"""Sets up the GPIO"""
 		self.servo = InitioServo();
+		self._initialisedPorts = {};
+		RPIO.wait_for_interrupts(threaded=True)
 
 	def __del__(self):
 		"""Cleans up the RPIO once finished"""
@@ -58,6 +61,7 @@ class InitioGpio:
 	def _checkPortIsType(self, port, type):
 		"""Checks a port is a specific type, raising an exception if not"""
 		if self._initialisedPorts[port] is not type:
+			print "expected %s but was %s" % (str(type), str(self._initialisedPorts[port]));
 			raise IncorrectPortMappingException();
 
 	def setPin(self, pin, value):
@@ -69,4 +73,8 @@ class InitioGpio:
 		"""Gets a pin value"""
 		self._checkPortIsType(pin, RPIO.IN);
 		return RPIO.input(pin);
+
+	def addInterrupt(self, pin, callback):
+		self._checkPortIsType(pin, RPIO.IN);
+		RPIO.add_interrupt_callback(pin, callback);
 

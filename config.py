@@ -17,24 +17,34 @@ class Rotation:
 class UltrasonicConfiguration:
 	"""Configuration for an ultrasonic distance sensor"""
 	
-	"""The port it is connected to"""
-	port = 0;
-
 	def __init__(self, p):
 		"""Constructs the ultrasonic config"""
 		self.port = p;
 
+class ToggleSwitchConfiguration:
+	"""Configuration for a toggle switch of some kind"""
+
+	def __init__(self, p):
+		"""Constructs the sensor config"""
+		self.port = p;
+
+class SidedToggleSwitchConfiguration(ToggleSwitchConfiguration):
+	"""Configuration for a toggle switch which also has a side property"""
+
+	def __init__(self, p, s):
+		"""Constructs the sensor config"""
+		ToggleSwitchConfiguration.__init__(self, p);
+		self.side = s;
+
+class SidedToggleSwitchPairConfiguration:
+	"""A pair of toggle switches with side configurations"""
+
+	def __init__(self, leftPort, rightPort):
+		self.left = SidedToggleSwitchConfiguration(leftPort, Side.Left);
+		self.right = SidedToggleSwitchConfiguration(rightPort, Side.Right);
+
 class MotorConfiguration:
 	"""Configuration for a motor that defines a port pair and a side"""
-
-	"""Port A is the port that will be +ve when going forwards"""
-	portA = 0;
-
-	"""Port B is the port that is -ve when the robot is going forwards"""
-	portB = 0;
-
-	"""Which side of the robot this is for"""
-	side = None;
 
 	def __init__(self, a, b, s):
 		"""Construct a motor configuration"""
@@ -45,27 +55,16 @@ class MotorConfiguration:
 class DriveConfiguration:
 	"""Configuration for a drive system (usually two motors)"""
 
-	"""This is the default configuration for the left motor"""
-	leftMotor = MotorConfiguration(7, 9, Side.Left);
+	def __init__(self):
+		"""This is the default configuration for the left motor"""
+		self.leftMotor = MotorConfiguration(7, 9, Side.Left);
 
-	"""This is the default configuration for the right motor"""
-	rightMotor = MotorConfiguration(8, 10, Side.Right);
+		"""This is the default configuration for the right motor"""
+		self.rightMotor = MotorConfiguration(8, 10, Side.Right);
 	
 
 class ServoConfiguration:
 	"""Configuration for a servo"""
-
-	"""The port that this servo listens on"""
-	port = 0;
-
-	"""The minimum PWM width this servo supports"""
-	minWidth = 50;
-
-	"""The maximum PWM width this servo supports"""
-	maxWidth = 250;
-
-	"""The middle position of this servo"""
-	middleWidth = 150;
 
 	def __init__(self, p, min, max, mid):
 		"""Construct a servo configuration"""
@@ -77,21 +76,29 @@ class ServoConfiguration:
 class HeadAssemblyConfiguration:
 	"""Configuration for a head assembly"""
 
-	"""The default pan configuration"""
-	panServo = ServoConfiguration(22, 54, 250, 147);
+	def __init__(self):
+		"""The default pan configuration"""
+		self.panServo = ServoConfiguration(25, 54, 250, 147);
 
-	"""The default tilt configuration"""
-	tiltServo = ServoConfiguration(18, 65, 250, 160);
+		"""The default tilt configuration"""
+		self.tiltServo = ServoConfiguration(24, 65, 250, 160);
 
 class InitioConfiguration:
 	"""A configuration object to pass to an Initio"""
 	
-	"""The default drive configuration"""
-	drive = DriveConfiguration();
+	def __init__(self):
+		"""The default drive configuration"""
+		self.drive = DriveConfiguration();
 
-	"""The default configuration for the head assembly"""
-	head = HeadAssemblyConfiguration();
+		"""The default configuration for the head assembly"""
+		self.head = HeadAssemblyConfiguration();
 
-	"""The default ultrasonic configuration"""
-	ultrasonic = UltrasonicConfiguration(14);
+		"""The default ultrasonic configuration"""
+		self.ultrasonic = UltrasonicConfiguration(14);
+
+		"""Default IR configuration"""
+		self.ir = SidedToggleSwitchPairConfiguration(27, 18);
+
+		"""Default floor sensor configuration"""
+		self.floor = SidedToggleSwitchPairConfiguration(23, 22);
 

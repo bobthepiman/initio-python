@@ -5,3 +5,5 @@ from config import *
 from head import *
 from servo import *
 from ultrasonic import *
+from ir import *
+from floor import *
